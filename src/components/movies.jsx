@@ -9,46 +9,52 @@ class Movies extends Component {
   movieSection(movie) {
     // console.log(movie);
     return (
-      <div className="row mb-3" key={movie._id}>
-        <div className="col-md-4 themed-grid-col">{movie.title}</div>
-        <div className="col-md-2 themed-grid-col">{movie.genre.name}</div>
-        <div className="col-md-2 themed-grid-col">{movie.numberInStock}</div>
-        <div className="col-md-2 themed-grid-col">{movie.dailyRentalRate}</div>
-        <div className="col-md-2 themed-grid-col">
-          <button onClick={() => this.handleDelete(movie._id)}>delete</button>
-        </div>
-      </div>
+      <tr key={movie._id}>
+        <td className="col-md-4 themed-grid-col">{movie.title}</td>
+        <td className="col-md-2 themed-grid-col">{movie.genre.name}</td>
+        <td className="col-md-2 themed-grid-col">{movie.numberInStock}</td>
+        <td className="col-md-2 themed-grid-col">{movie.dailyRentalRate}</td>
+        <td className="col-md-2 themed-grid-col">
+          <button
+            className="btn btn-danger btn-sm"
+            onClick={() => this.handleDelete(movie)}
+          >
+            delete
+          </button>
+        </td>
+      </tr>
     );
   }
-  handleDelete = (id) => {
-    deleteMovie(id);
-    this.setState({ movie: getMovies() });
+  handleDelete = (movie) => {
+    const movies = this.state.movies.filter((m) => m._id !== movie._id);
+    this.setState({ movies });
   };
   getSpan() {
     if (this.state.movies.length !== 0)
       return (
         <div>
           <div>showing {this.state.movies.length} movies</div>
-          <hr className="m-4"></hr>
-          <div className="row mb-3" style={{ fontWeight: "bold" }}>
-            <div className="col-md-4 themed-grid-col">Title</div>
-            <div className="col-md-2 themed-grid-col">Genre</div>
-            <div className="col-md-2 themed-grid-col">Stock</div>
-            <div className="col-md-2 themed-grid-col">Rate</div>
-            <div className="col-md-2 themed-grid-col"></div>
-          </div>
+          <table className="table">
+            <thead style={{ fontWeight: "bold" }}>
+              <tr>
+                <th className="col-md-4">Title</th>
+                <th className="col-md-2">Genre</th>
+                <th className="col-md-2">Stock</th>
+                <th className="col-md-2">Rate</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.state.movies.map((movie) => this.movieSection(movie))}
+            </tbody>
+          </table>
         </div>
       );
 
     return <div>There is no movie</div>;
   }
   render() {
-    return (
-      <React.Fragment>
-        {this.getSpan()}
-        {this.state.movies.map((movie) => this.movieSection(movie))}
-      </React.Fragment>
-    );
+    return <React.Fragment>{this.getSpan()}</React.Fragment>;
   }
 }
 
