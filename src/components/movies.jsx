@@ -27,7 +27,7 @@ class Movies extends Component {
     }
     render() { 
         return <React.Fragment>
-            <div>showing {this.state.count} movies</div>
+            <div>showing {this.state.movies.length} movies</div>
             <hr className="m-4"></hr>
             <div className="row mb-3" style={{fontWeight:'bold'}}>
                 <div className="col-md-4 themed-grid-col">Title</div>
