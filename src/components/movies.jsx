@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {getMovies} from '../services/fakeMovieService';
+import {getMovies,deleteMovie} from '../services/fakeMovieService';
 
 class Movies extends Component {
     state = { 
@@ -14,12 +14,20 @@ class Movies extends Component {
                 <div className="col-md-2 themed-grid-col">{movie.numberInStock}</div>
                 <div className="col-md-2 themed-grid-col">{movie.dailyRentalRate}</div>
                 <div className="col-md-2 themed-grid-col">
-                    <button>delete</button>
+                    <button onClick={()=>this.handleDelete(movie._id)}>delete</button>
                 </div>
             </div>
     }
+    handleDelete=(id)=>{
+      deleteMovie(id);
+      this.setState({movie:getMovies()})
+    }
+    getTitleSpan(){
+        
+    }
     render() { 
         return <React.Fragment>
+            <div>showing {this.state.count} movies</div>
             <hr className="m-4"></hr>
             <div className="row mb-3" style={{fontWeight:'bold'}}>
                 <div className="col-md-4 themed-grid-col">Title</div>
