@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
+import Heart from "../components/heart";
 
 class Movies extends Component {
   state = {
@@ -10,10 +11,13 @@ class Movies extends Component {
     // console.log(movie);
     return (
       <tr key={movie._id}>
-        <td className="col-md-4 themed-grid-col">{movie.title}</td>
+        <td className="col-md-3 themed-grid-col">{movie.title}</td>
         <td className="col-md-2 themed-grid-col">{movie.genre.name}</td>
         <td className="col-md-2 themed-grid-col">{movie.numberInStock}</td>
         <td className="col-md-2 themed-grid-col">{movie.dailyRentalRate}</td>
+        <td className="col-md-1">
+          <Heart />
+        </td>
         <td className="col-md-2 themed-grid-col">
           <button
             className="btn btn-danger btn-sm"
@@ -41,7 +45,8 @@ class Movies extends Component {
                 <th className="col-md-2">Genre</th>
                 <th className="col-md-2">Stock</th>
                 <th className="col-md-2">Rate</th>
-                <th></th>
+                <th className="col-md-1"></th>
+                <th className="col-md-2"></th>
               </tr>
             </thead>
             <tbody>
