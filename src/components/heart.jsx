@@ -5,7 +5,10 @@ class Heart extends Component {
     isSelected: false,
   };
   render() {
-    return <i onClick={this.handleToggle} className={this.getHeartClass()}></i>;
+    let { onSelected, movie } = this.props;
+    return (
+      <i onClick={() => onSelected(movie)} className={this.getHeartClass()}></i>
+    );
   }
   handleToggle = () => {
     let state = !this.state.isSelected;
@@ -15,7 +18,7 @@ class Heart extends Component {
 
   getHeartClass() {
     let className = "fa fa-heart";
-    return this.state.isSelected ? className : className + "-o";
+    return this.props.liked ? className : className + "-o";
   }
 }
 

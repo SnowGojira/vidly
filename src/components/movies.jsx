@@ -16,7 +16,11 @@ class Movies extends Component {
         <td className="col-md-2 themed-grid-col">{movie.numberInStock}</td>
         <td className="col-md-2 themed-grid-col">{movie.dailyRentalRate}</td>
         <td className="col-md-1">
-          <Heart />
+          <Heart
+            movie={movie}
+            liked={movie.liked}
+            onSelected={this.handleSelected}
+          />
         </td>
         <td className="col-md-2 themed-grid-col">
           <button
@@ -29,6 +33,15 @@ class Movies extends Component {
       </tr>
     );
   }
+  handleSelected = (movie) => {
+    let movies = [...this.state.movies];
+    let index = movies.indexOf(movie);
+    let m = { ...movie };
+
+    m.liked = !m.liked;
+    movies[index] = m;
+    this.setState({ movies });
+  };
   handleDelete = (movie) => {
     const movies = this.state.movies.filter((m) => m._id !== movie._id);
     this.setState({ movies });
