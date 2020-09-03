@@ -2,11 +2,11 @@ import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
 import Heart from "./heart";
 import Pagination from "./pagination";
+import { paginate } from "../utils/paginate";
 
 class Movies extends Component {
   state = {
     movies: getMovies(),
-    currentMovies: getMovies().slice(0, 4),
     pageSize: 4,
     currentPage: 1,
   };
@@ -51,6 +51,9 @@ class Movies extends Component {
     this.setState({ movies });
   };
   getSpan() {
+    let { currentPage, pageSize, movies: allMovies } = this.state;
+    let movies = paginate(allMovies, currentPage, pageSize);
+
     if (this.state.movies.length !== 0)
       return (
         <div>
@@ -66,11 +69,7 @@ class Movies extends Component {
                 <th className="col-md-2"></th>
               </tr>
             </thead>
-            <tbody>
-              {this.state.currentMovies.map((movie) =>
-                this.movieSection(movie)
-              )}
-            </tbody>
+            <tbody>{movies.map((movie) => this.movieSection(movie))}</tbody>
           </table>
         </div>
       );
@@ -79,22 +78,6 @@ class Movies extends Component {
   }
   handlePageChange = (page) => {
     this.setState({ currentPage: page });
-    //处理数据的分流
-    let movies = [...this.state.movies];
-    let size = this.state.pageSize;
-    let length = movies.length;
-    let newMovies;
-    let start = (page - 1) * size;
-    let end;
-    if (page * size <= length) {
-      end = page * size;
-    } else {
-      end = length;
-    }
-    newMovies = movies.slice(start, end);
-
-    console.log(`start:${start},end:${end}`);
-    this.setState({ currentMovies: newMovies });
   };
   render() {
     return (
