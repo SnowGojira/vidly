@@ -3,7 +3,7 @@ import _ from "lodash";
 
 class Pagination extends Component {
   render() {
-    let { total, pageSize, onPageChange } = this.props;
+    let { total, pageSize, onPageChange, currentPage } = this.props;
     let pageCount = Math.ceil(total / pageSize);
     let pages = _.range(1, pageCount + 1);
 
@@ -12,8 +12,17 @@ class Pagination extends Component {
     return (
       <ul className="pagination">
         {pages.map((page) => (
-          <li key={page} onClick={onPageChange} className="page-item">
-            <span className="page-link">{page}</span>
+          <li
+            key={page}
+            className={page === currentPage ? "page-item active" : "page-item"}
+          >
+            <a
+              className="page-link"
+              href="#"
+              onClick={() => onPageChange(page)}
+            >
+              {page}
+            </a>
           </li>
         ))}
       </ul>
