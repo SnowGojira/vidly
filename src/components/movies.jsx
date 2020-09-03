@@ -75,9 +75,22 @@ class Movies extends Component {
     return <div>There is no movie</div>;
   }
   handlePageChange = (page) => {
-    //console.log(page);
-
     this.setState({ currentPage: page });
+    //处理数据的分流
+    let movies = [...this.state.movies];
+    let size = this.state.pageSize;
+    let length = movies.length;
+    let newMovies;
+    let start = (page - 1) * size;
+    let end;
+    if (page * size <= length) {
+      end = page * size;
+    } else {
+      end = length;
+    }
+    newMovies = movies.slice(start, end);
+
+    console.log(`start:${start},end:${end}`);
   };
   render() {
     return (
