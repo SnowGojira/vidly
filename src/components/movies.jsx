@@ -6,6 +6,7 @@ import Pagination from "./pagination";
 class Movies extends Component {
   state = {
     movies: getMovies(),
+    currentMovies: getMovies().slice(0, 4),
     pageSize: 4,
     currentPage: 1,
   };
@@ -66,7 +67,9 @@ class Movies extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.movies.map((movie) => this.movieSection(movie))}
+              {this.state.currentMovies.map((movie) =>
+                this.movieSection(movie)
+              )}
             </tbody>
           </table>
         </div>
@@ -91,6 +94,7 @@ class Movies extends Component {
     newMovies = movies.slice(start, end);
 
     console.log(`start:${start},end:${end}`);
+    this.setState({ currentMovies: newMovies });
   };
   render() {
     return (
