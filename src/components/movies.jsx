@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
-import Heart from "../components/heart";
+import Heart from "./heart";
+import Pagination from "./pagination";
 
 class Movies extends Component {
   state = {
     movies: getMovies(),
+    pageSize: 4,
   };
 
   movieSection(movie) {
@@ -71,8 +73,20 @@ class Movies extends Component {
 
     return <div>There is no movie</div>;
   }
+  handlePageChange() {
+    console.log("pageChanged");
+  }
   render() {
-    return <React.Fragment>{this.getSpan()}</React.Fragment>;
+    return (
+      <React.Fragment>
+        {this.getSpan()}
+        <Pagination
+          total={this.state.movies.length}
+          pageSize={this.state.pageSize}
+          onPageChange={this.handlePageChange}
+        />
+      </React.Fragment>
+    );
   }
 }
 
