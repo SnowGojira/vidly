@@ -23,7 +23,7 @@ class Movies extends Component {
     });
   }
 
-  handleSelected = (movie) => {
+  handleHeart = (movie) => {
     let movies = [...this.state.movies];
     let index = movies.indexOf(movie);
     let m = { ...movie };
@@ -71,8 +71,8 @@ class Movies extends Component {
                 <div>showing {filtered.length} movies</div>
                 <MoviesTable
                   movies={movies}
-                  onHeartSelect={this.handleSelected}
-                  onDeleteClick={this.handleDelete}
+                  onHeart={this.handleHeart}
+                  onDelete={this.handleDelete}
                 />
               </div>
             ) : (

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Heart from "./common/heart";
 
 const MoviesTable = (props) => {
-  const { movies, onHeartSelect, onDeleteClick } = props;
+  const { movies, onHeart, onDelete } = props;
   return (
     <table className="table">
       <thead style={{ fontWeight: "bold" }}>
@@ -28,13 +28,13 @@ const MoviesTable = (props) => {
               <Heart
                 movie={movie}
                 liked={movie.liked}
-                onSelected={() => onHeartSelect(movie)}
+                onSelected={() => onHeart(movie)}
               />
             </td>
             <td className="col-md-2 themed-grid-col">
               <button
                 className="btn btn-danger btn-sm"
-                onClick={() => onDeleteClick(movie)}
+                onClick={() => onDelete(movie)}
               >
                 delete
               </button>
