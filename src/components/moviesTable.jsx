@@ -2,15 +2,23 @@ import React, { Component } from "react";
 import Heart from "./common/heart";
 
 const MoviesTable = (props) => {
-  const { movies, onHeart, onDelete } = props;
+  const { movies, onHeart, onDelete, onSort } = props;
   return (
     <table className="table">
       <thead style={{ fontWeight: "bold" }}>
         <tr>
-          <th className="col-md-4">Title</th>
-          <th className="col-md-2">Genre</th>
-          <th className="col-md-2">Stock</th>
-          <th className="col-md-2">Rate</th>
+          <th onClick={() => onSort("title")} className="col-md-4">
+            Title
+          </th>
+          <th onClick={() => onSort("genre.name")} className="col-md-2">
+            Genre
+          </th>
+          <th onClick={() => onSort("numberInStock")} className="col-md-2">
+            Stock
+          </th>
+          <th onClick={() => onSort("dailyRentalRate")} className="col-md-2">
+            Rate
+          </th>
           <th className="col-md-1"></th>
           <th className="col-md-2"></th>
         </tr>
