@@ -5,7 +5,7 @@ import MoviesTable from "./moviesTable";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
 import { filterMovies } from "../utils/filter";
-import ListGroup from "./common/listgroup";
+import ListGroup from "./common/listGroup";
 import _ from "lodash";
 
 class Movies extends Component {
@@ -47,7 +47,7 @@ class Movies extends Component {
   handleSort = (sortColumn) => {
     this.setState({ sortColumn });
   };
-  render() {
+  getPageData = () => {
     let {
       currentPage,
       pageSize,
@@ -61,6 +61,12 @@ class Movies extends Component {
         : allMovies;
     let sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
     let movies = paginate(sorted, currentPage, pageSize);
+
+    return { movies, filtered };
+  };
+  render() {
+    let { sortColumn } = this.state;
+    const { movies, filtered } = this.getPageData();
 
     return (
       <React.Fragment>

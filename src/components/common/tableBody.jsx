@@ -1,40 +1,34 @@
-import React, { Component } from 'react';
-import Heart from "./heart";
+import React, { Component } from "react";
+import _ from "lodash";
 
 class TableBody extends Component {
-    
-    render() { 
-        const {onHeart,onDelete,movies} = this.props;
-        return ( <tbody>
-            {movies.map((movie) => (
-              <tr key={movie._id}>
-                <td className="col-md-3 themed-grid-col">{movie.title}</td>
-                <td className="col-md-2 themed-grid-col">{movie.genre.name}</td>
-                <td className="col-md-2 themed-grid-col">
-                  {movie.numberInStock}
-                </td>
-                <td className="col-md-2 themed-grid-col">
-                  {movie.dailyRentalRate}
-                </td>
-                <td className="col-md-1">
-                  <Heart
-                    movie={movie}
-                    liked={movie.liked}
-                    onSelected={() => onHeart(movie)}
-                  />
-                </td>
-                <td className="col-md-2 themed-grid-col">
-                  <button
-                    className="btn btn-danger btn-sm"
-                    onClick={() => onDelete(movie)}
-                  >
-                    delete
-                  </button>
-                </td>
-              </tr>
+  renderCell(movie, column) {
+    return column.content ? column.content(movie) : _.get(movie, column.path);
+  }
+
+  createKey(movie, column) {
+    return movie[this.props.valueProperty] + (column.label || column.key);
+  }
+  render() {
+    const { movies, columns, valueProperty } = this.props;
+    return (
+      <tbody>
+        {movies.map((movie) => (
+          <tr key={movie[valueProperty]}>
+            {columns.map((column) => (
+              <td key={this.createKey(movie, column)}>
+                {this.renderCell(movie, column)}
+              </td>
             ))}
-          </tbody> );
-    }
+          </tr>
+        ))}
+      </tbody>
+    );
+  }
 }
- 
+
+TableBody.defaultProps = {
+  valueProperty: "_id",
+};
+
 export default TableBody;
