@@ -12,7 +12,6 @@ class Heart extends Component {
   }
   handleToggle = () => {
     let state = !this.state.isSelected;
-    console.log(state);
     this.setState({ isSelected: state });
   };
 
