@@ -9,19 +9,21 @@ import NotFound from "./components/notFound";
 import MovieDetails from "./components/movieDetails";
 function App() {
   return (
-    <main className="container">
+    <React.Fragment>
       <NavBar />
-      <Switch>
-        <Route path="/movies/:id" component={MovieDetails} />
-        <Route path="/movies" component={Movies} />
+      <main className="container">
+        <Switch>
+          <Route path="/movies/:id" component={MovieDetails} />
+          <Route path="/movies" component={Movies} />
 
-        <Route path="/customers" component={Customers} />
-        <Route path="/rentals" component={Rentals} />
-        <Route path="/notfound" component={NotFound} />
-        <Redirect from="/" to="/movies" exact />
-        <Redirect to="/notfound" />
-      </Switch>
-    </main>
+          <Route path="/customers" component={Customers} />
+          <Route path="/rentals" component={Rentals} />
+          <Route path="/notfound" component={NotFound} />
+          <Redirect from="/" to="/movies" exact />
+          <Redirect to="/notfound" />
+        </Switch>
+      </main>
+    </React.Fragment>
   );
 }
 
