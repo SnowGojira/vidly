@@ -24,7 +24,6 @@ class LoginForm extends Component {
     if (errors) return;
     //call server
     const { username } = this.state.account;
-    console.log(username);
   };
   handleChange = ({ currentTarget: input }) => {
     const account = { ...this.state.account };
