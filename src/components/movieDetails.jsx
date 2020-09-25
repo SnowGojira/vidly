@@ -1,44 +1,74 @@
 import React, { Component } from "react";
 import Form from "./common/form";
 import Joi from "joi-browser";
+import { getGenres } from "../services/fakeGenreService";
+import { getMovie, saveMovie } from "../services/fakeMovieService";
 
 class MovieDetails extends Form {
   state = {
     data: {
       title: "",
-      genre: "",
-      stock: "",
-      rate: "",
+      genreId: "",
+      numberInStock: "",
+      dailyRentalRate: "",
     },
     errors: {},
+    genres: [],
   };
   schema = {
+    _id: Joi.string(),
     title: Joi.string().required().label("Title"),
-    genre: Joi.string().required().label("Genre"),
-    stock: Joi.number().integer().min(0).max(100).required().label("Stock"),
-    rate: Joi.number().min(0).max(10).required().label("Rate"),
+    genreId: Joi.string().required().label("Genre"),
+    numberInStock: Joi.number()
+      .integer()
+      .min(0)
+      .max(100)
+      .required()
+      .label("Number In Stock"),
+    dailyRentalRate: Joi.number()
+      .min(0)
+      .max(10)
+      .required()
+      .label("Daily Rental Rate"),
   };
+
+  componentDidMount() {
+    const genres = [...getGenres()];
+    this.setState({ genres });
+
+    const movieId = this.props.match.params.id;
+    if (movieId === "new") return;
+
+    const movie = getMovie(movieId);
+    if (!movie) return this.props.history.replace("/not-found");
+
+    this.setState({ data: this.mapToViewModel(movie) });
+  }
+
+  mapToViewModel(movie) {
+    return {
+      _id: movie._id,
+      title: movie.title,
+      genreId: movie.genre._id,
+      numberInStock: movie.numberInStock,
+      dailyRentalRate: movie.dailyRentalRate,
+    };
+  }
+
   doSubmit = () => {
+    saveMovie(this.state.data);
     this.props.history.push("/movies");
   };
+
   render() {
-    const { match } = this.props;
     return (
       <div>
-        <h1>{`Movie Form:${match.params.id}`}</h1>
+        <h1>{`Movie Form`}</h1>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("title", "Title")}
-          <div className="form-group">
-            <label htmlFor="genre">Genre</label>
-            <select className="custom-select custom-select">
-              <option value>Choose ...</option>
-              <option>One</option>
-              <option>Two</option>
-              <option>Three</option>
-            </select>
-          </div>
-          {this.renderInput("stock", "Number In Stock")}
-          {this.renderInput("rate", "Rate")}
+          {this.renderSelector("genreId", "Genre", this.state.genres)}
+          {this.renderInput("numberInStock", "Number In Stock", "number")}
+          {this.renderInput("dailyRentalRate", "Rate")}
           {this.renderSubmitButton("Save")}
         </form>
       </div>
