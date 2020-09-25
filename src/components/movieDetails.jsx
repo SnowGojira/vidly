@@ -1,7 +1,24 @@
 import React, { Component } from "react";
+import Form from "./common/form";
+import Joi from "joi-browser";
 
-class MovieDetails extends Component {
-  handleSave = () => {
+class MovieDetails extends Form {
+  state = {
+    data: {
+      title: "",
+      genre: "",
+      stock: "",
+      rate: "",
+    },
+    errors: {},
+  };
+  schema = {
+    title: Joi.string().trim().required().label("Title"),
+    genre: Joi.string().trim().required().label("Genre"),
+    stock: Joi.string().trim().required().label("Stock"),
+    rate: Joi.string().trim().required().label("Rate"),
+  };
+  doSubmit = () => {
     this.props.history.push("/movies");
   };
   render() {
@@ -9,9 +26,13 @@ class MovieDetails extends Component {
     return (
       <div>
         <h1>{`movie:${match.params.id}`}</h1>
-        <button className="btn btn-danger btn-sm" onClick={this.handleSave}>
-          Save
-        </button>
+        <form onSubmit={this.handleSubmit}>
+          {this.renderInput("title", "Title")}
+          {this.renderInput("genre", "Genre")}
+          {this.renderInput("stock", "Number In Stock")}
+          {this.renderInput("rate", "Rate")}
+          {this.renderSubmitButton("Save")}
+        </form>
       </div>
     );
   }
