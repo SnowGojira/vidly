@@ -25,10 +25,18 @@ class MovieDetails extends Form {
     const { match } = this.props;
     return (
       <div>
-        <h1>{`movie:${match.params.id}`}</h1>
+        <h1>{`Movie Form:${match.params.id}`}</h1>
         <form onSubmit={this.handleSubmit}>
           {this.renderInput("title", "Title")}
-          {this.renderInput("genre", "Genre")}
+          <div className="form-group">
+            <label htmlFor="genre">Genre</label>
+            <select className="custom-select custom-select">
+              <option value>Choose ...</option>
+              <option>One</option>
+              <option>Two</option>
+              <option>Three</option>
+            </select>
+          </div>
           {this.renderInput("stock", "Number In Stock")}
           {this.renderInput("rate", "Rate")}
           {this.renderSubmitButton("Save")}
