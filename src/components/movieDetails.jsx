@@ -41,7 +41,6 @@ class MovieDetails extends Form {
 
     const movie = getMovie(movieId);
     if (!movie) return this.props.history.replace("/not-found");
-
     this.setState({ data: this.mapToViewModel(movie) });
   }
 
@@ -61,6 +60,7 @@ class MovieDetails extends Form {
   };
 
   render() {
+    // console.log(this.state.data);
     return (
       <div>
         <h1>{`Movie Form`}</h1>
