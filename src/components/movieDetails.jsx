@@ -13,10 +13,10 @@ class MovieDetails extends Form {
     errors: {},
   };
   schema = {
-    title: Joi.string().trim().required().label("Title"),
-    genre: Joi.string().trim().required().label("Genre"),
-    stock: Joi.string().trim().required().label("Stock"),
-    rate: Joi.string().trim().required().label("Rate"),
+    title: Joi.string().required().label("Title"),
+    genre: Joi.string().required().label("Genre"),
+    stock: Joi.number().integer().min(0).max(100).required().label("Stock"),
+    rate: Joi.number().min(0).max(10).required().label("Rate"),
   };
   doSubmit = () => {
     this.props.history.push("/movies");
