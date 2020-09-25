@@ -5,6 +5,7 @@ import MoviesTable from "./moviesTable";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
 import { filterMovies } from "../utils/filter";
+import { Link } from "react-router-dom";
 import ListGroup from "./common/listGroup";
 import _ from "lodash";
 
@@ -81,7 +82,10 @@ class Movies extends Component {
           <div className="col-md-9">
             {this.state.movies.length !== 0 ? (
               <div>
-                <div>showing {filtered.length} movies</div>
+                <Link to="/movies/new">
+                  <button className="btn btn-primary mb-2">New Movie</button>
+                </Link>
+                <div className="mb-2">showing {filtered.length} movies</div>
                 <MoviesTable
                   movies={movies}
                   onHeart={this.handleHeart}
