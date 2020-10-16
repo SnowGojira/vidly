@@ -9,7 +9,8 @@ import { Link } from "react-router-dom";
 import ListGroup from "./common/listGroup";
 import _ from "lodash";
 
-// import { getGenres } from "../services/genreService";
+import { gotGenres } from "../services/genreService";
+import { gotMovies } from "../services/movieService";
 
 // import config from "../services/config.json";
 // import http from "../services/httpService";
@@ -26,8 +27,10 @@ class Movies extends Component {
   };
 
   async componentDidMount() {
-    const genres = [{ name: "All genres", _id: -1 }, ...getGenres()];
+    // const genres = [{ name: "All genres", _id: -1 }, ...getGenres()];
+    const genres = [{ name: "All genres", _id: -1 }, ...(await gotGenres())];
 
+    console.log(await gotMovies());
     this.setState({
       movies: getMovies(),
       genres,
@@ -91,6 +94,7 @@ class Movies extends Component {
     return { movies, filtered };
   };
   render() {
+    console.log("rendered");
     let { sortColumn } = this.state;
     const { movies, filtered } = this.getPageData();
 
