@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { getMovies } from "../services/fakeMovieService";
-import { getGenres } from "../services/fakeGenreService";
+// import { getGenres } from "../services/fakeGenreService";
 import MoviesTable from "./moviesTable";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
@@ -9,16 +9,25 @@ import { Link } from "react-router-dom";
 import ListGroup from "./common/listGroup";
 import _ from "lodash";
 
+import { getGenres } from "../services/genreService";
+
+// import config from "../services/config.json";
+// import http from "../services/httpService";
+
 class Movies extends Component {
   state = {
     movies: [],
     genres: [],
     pageSize: 4,
     currentPage: 1,
+    searchQuery: "",
+    selectedGenre: null,
     sortColumn: { path: "title", order: "asc" },
   };
-  componentDidMount() {
-    const genres = [{ name: "All genres", _id: -1 }, ...getGenres()];
+
+  async componentDidMount() {
+    const genres = [{ name: "All genres", _id: -1 }, ...(await getGenres())];
+
     this.setState({
       movies: getMovies(),
       genres,
@@ -43,10 +52,18 @@ class Movies extends Component {
     this.setState({ currentPage: page });
   };
   handleGenreSelect = (genre) => {
-    this.setState({ selectedGenre: genre, currentPage: 1 });
+    // this.handleInputChange(null);
+    this.setState({ selectedGenre: genre, searchQuery: "", currentPage: 1 });
   };
   handleSort = (sortColumn) => {
     this.setState({ sortColumn });
+  };
+  handleInputChange = ({ currentTarget: input }) => {
+    this.setState({
+      searchQuery: input.value,
+      selectedGenre: null,
+      currentTarget: 1,
+    });
   };
   getPageData = () => {
     let {
@@ -54,12 +71,20 @@ class Movies extends Component {
       pageSize,
       movies: allMovies,
       sortColumn,
+      searchQuery,
       selectedGenre,
     } = this.state;
-    let filtered =
-      selectedGenre && selectedGenre._id !== -1
-        ? filterMovies(allMovies, selectedGenre)
-        : allMovies;
+
+    console.log(searchQuery);
+    let filtered = allMovies;
+    if (searchQuery) {
+      filtered = allMovies.filter((o) =>
+        o.title.toLowerCase().startsWith(searchQuery.toLowerCase())
+      );
+    } else if (selectedGenre && selectedGenre._id !== -1) {
+      filtered = filterMovies(allMovies, selectedGenre);
+    }
+
     let sorted = _.orderBy(filtered, [sortColumn.path], [sortColumn.order]);
     let movies = paginate(sorted, currentPage, pageSize);
 
@@ -86,6 +111,12 @@ class Movies extends Component {
                   <button className="btn btn-primary mb-2">New Movie</button>
                 </Link>
                 <div className="mb-2">showing {filtered.length} movies</div>
+                <input
+                  value={this.state.searchQuery}
+                  type="text"
+                  onChange={this.handleInputChange}
+                  className="form-control"
+                />
                 <MoviesTable
                   movies={movies}
                   onHeart={this.handleHeart}

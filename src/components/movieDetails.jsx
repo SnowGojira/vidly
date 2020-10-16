@@ -60,7 +60,6 @@ class MovieDetails extends Form {
   };
 
   render() {
-    // console.log(this.state.data);
     return (
       <div>
         <h1>{`Movie Form`}</h1>
