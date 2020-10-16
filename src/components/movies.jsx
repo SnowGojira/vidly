@@ -30,9 +30,8 @@ class Movies extends Component {
     // const genres = [{ name: "All genres", _id: -1 }, ...getGenres()];
     const genres = [{ name: "All genres", _id: -1 }, ...(await gotGenres())];
 
-    console.log(await gotMovies());
     this.setState({
-      movies: getMovies(),
+      movies: await gotMovies(),
       genres,
     });
   }
