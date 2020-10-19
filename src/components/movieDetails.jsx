@@ -5,6 +5,7 @@ import { getGenres } from "../services/fakeGenreService";
 import { getMovie, saveMovie } from "../services/fakeMovieService";
 
 import { gotGenres } from "../services/genreService";
+import { gotMovies,postMovie } from "../services/movieService";
 
 class MovieDetails extends Form {
   state = {
@@ -38,10 +39,11 @@ class MovieDetails extends Form {
     // const genres = [...getGenres()];
     const genres = [...await gotGenres()];
     this.setState({ genres });
-
+    //点击new按钮的跳转
     const movieId = this.props.match.params.id;
     if (movieId === "new") return;
-
+    
+    //直接点击元素跳转的链接
     const movie = getMovie(movieId);
     if (!movie) return this.props.history.replace("/not-found");
     this.setState({ data: this.mapToViewModel(movie) });
@@ -57,9 +59,18 @@ class MovieDetails extends Form {
     };
   }
 
-  doSubmit = () => {
-    saveMovie(this.state.data);
-    this.props.history.push("/movies");
+  doSubmit = async () => {
+    //在这一步完成post
+    try{
+      //saveMovie(this.state.data);
+      await postMovie(this.state.data);
+      this.props.history.push("/movies");
+      
+    }catch(err){
+      console.log("something happened:"+err);
+    }
+    
+    
   };
 
   render() {

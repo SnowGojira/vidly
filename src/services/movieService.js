@@ -11,20 +11,18 @@ export const gotMovie = async (id) => {
   return movie;
 };
 
-// export function saveMovie(movie) {
-//   let movieInDb = movies.find((m) => m._id === movie._id) || {};
-//   movieInDb.title = movie.title;
-//   movieInDb.genre = genresAPI.genres.find((g) => g._id === movie.genreId);
-//   movieInDb.numberInStock = movie.numberInStock;
-//   movieInDb.dailyRentalRate = movie.dailyRentalRate;
+export async function postMovie(movie) {
+  // let newMovie = movies.find((m) => m._id === movie._id) || {};
+  const newMovie = {};
+  newMovie.title = movie.title;
+  newMovie.genreId = movie.genreId;
+  newMovie.numberInStock = movie.numberInStock;
+  newMovie.dailyRentalRate = movie.dailyRentalRate;
+  
+  const{data:payload} = await http.post(config.moviesApiEnd,newMovie);
 
-//   if (!movieInDb._id) {
-//     movieInDb._id = Date.now().toString();
-//     movies.push(movieInDb);
-//   }
-
-//   return movieInDb;
-// }
+  return payload;
+}
 
 export const deleteMovie = async (id) => {
   await http.delete(`${config.moviesApiEnd}/${id}`);
