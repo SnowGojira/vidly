@@ -10,7 +10,7 @@ import ListGroup from "./common/listGroup";
 import _ from "lodash";
 
 import { gotGenres } from "../services/genreService";
-import { gotMovies } from "../services/movieService";
+import { gotMovies,deleteMovie } from "../services/movieService";
 
 // import config from "../services/config.json";
 // import http from "../services/httpService";
@@ -27,7 +27,6 @@ class Movies extends Component {
   };
 
   async componentDidMount() {
-    // const genres = [{ name: "All genres", _id: -1 }, ...getGenres()];
     const genres = [{ name: "All genres", _id: -1 }, ...(await gotGenres())];
 
     this.setState({
@@ -45,9 +44,21 @@ class Movies extends Component {
     movies[index] = m;
     this.setState({ movies });
   };
-  handleDelete = (movie) => {
-    const movies = this.state.movies.filter((m) => m._id !== movie._id);
-    this.setState({ movies });
+  handleDelete = async (movie) => {
+    const originalMovies = this.state.movies;
+    const deletedMovies = this.state.movies.filter((m) => m._id !== movie._id);
+    this.setState({ movies:deletedMovies });
+
+    try{
+      await deleteMovie(movie._id);
+    }catch(err){
+      if(err.response && err.response.status === 404){
+        console.log("You have already deleted it!")
+      }else{
+        console.log("something happened! "+err);
+      }
+      this.setState({movies:originalMovies});
+    }
   };
 
   handlePageChange = (page) => {
