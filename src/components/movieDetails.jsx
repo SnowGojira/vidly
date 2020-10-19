@@ -4,6 +4,8 @@ import Joi from "joi-browser";
 import { getGenres } from "../services/fakeGenreService";
 import { getMovie, saveMovie } from "../services/fakeMovieService";
 
+import { gotGenres } from "../services/genreService";
+
 class MovieDetails extends Form {
   state = {
     data: {
@@ -32,8 +34,9 @@ class MovieDetails extends Form {
       .label("Daily Rental Rate"),
   };
 
-  componentDidMount() {
-    const genres = [...getGenres()];
+  async componentDidMount() {
+    // const genres = [...getGenres()];
+    const genres = [...await gotGenres()];
     this.setState({ genres });
 
     const movieId = this.props.match.params.id;
