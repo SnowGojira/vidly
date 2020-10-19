@@ -26,8 +26,6 @@ export const gotMovie = async (id) => {
 //   return movieInDb;
 // }
 
-// export function deleteMovie(id) {
-//   let movieInDb = movies.find((m) => m._id === id);
-//   movies.splice(movies.indexOf(movieInDb), 1);
-//   return movieInDb;
-// }
+export const deleteMovie = async (id) => {
+  await http.delete(`${config.moviesApiEnd}/${id}`);
+}
