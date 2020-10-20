@@ -5,9 +5,8 @@ export const getMovies = () => {
   return http.get(moviesApiEnd);
 };
 
-export const gotMovie = async (id) => {
-  const { data: movie } = await http.get(`${moviesApiEnd}/${id}`);
-  return movie;
+export const getMovie = async (id) => {
+  return http.get(`${moviesApiEnd}/${id}`);
 };
 
 export async function saveMovie(movie) {

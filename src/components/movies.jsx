@@ -105,7 +105,6 @@ class Movies extends Component {
     return { movies, filtered };
   };
   render() {
-    console.log("rendered");
     let { sortColumn } = this.state;
     const { movies, filtered } = this.getPageData();
 

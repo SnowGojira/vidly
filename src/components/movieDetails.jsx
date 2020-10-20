@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import Form from "./common/form";
 import Joi from "joi-browser";
 // import { getGenres } from "../services/fakeGenreService";
-import { getMovie } from "../services/fakeMovieService";
+// import { getMovie } from "../services/fakeMovieService";
 
 import { getGenres } from "../services/genreService";
-import { gotMovie,saveMovie } from "../services/movieService";
+import { getMovie,saveMovie } from "../services/movieService";
+import { toast } from "react-toastify";
 
 class MovieDetails extends Form {
   state = {
@@ -34,21 +35,27 @@ class MovieDetails extends Form {
       .required()
       .label("Daily Rental Rate"),
   };
-
-  async componentDidMount() {
-    // const genres = [...getGenres()];
-    const {data} = await getGenres();
-    const genres = [...data];
+  async populateGenres(){
+    const {data:genres} = await getGenres();
     this.setState({ genres });
+  }
+  async populateMovie(){
     //点击new按钮的跳转
     const movieId = this.props.match.params.id;
     if (movieId === "new") return;
-    
     //直接点击元素跳转的链接
-    // const movie = getMovie(movieId);
-    const movie = await gotMovie(movieId);
-    if (!movie) return this.props.history.replace("/not-found");
-    this.setState({ data: this.mapToViewModel(movie) });
+    try{
+      const {data:movie} = await getMovie(movieId);
+      this.setState({ data: this.mapToViewModel(movie) });
+    }catch(err){
+      if(err.response && err.response.status === 404) {
+         this.props.history.replace("/not-found");
+      } 
+    }
+  }
+  async componentDidMount() {
+    await this.populateGenres();
+    await this.populateMovie();
   }
 
   mapToViewModel(movie) {
