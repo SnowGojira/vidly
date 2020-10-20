@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import Form from "./common/form";
 import Joi from "joi-browser";
 import { getGenres } from "../services/fakeGenreService";
-import { getMovie, saveMovie } from "../services/fakeMovieService";
+import { getMovie } from "../services/fakeMovieService";
 
 import { gotGenres } from "../services/genreService";
-import { gotMovies,postMovie } from "../services/movieService";
+import { gotMovies,saveMovie } from "../services/movieService";
 
 class MovieDetails extends Form {
   state = {
@@ -63,7 +63,7 @@ class MovieDetails extends Form {
     //在这一步完成post
     try{
       //saveMovie(this.state.data);
-      await postMovie(this.state.data);
+      await saveMovie(this.state.data);
       this.props.history.push("/movies");
       
     }catch(err){
