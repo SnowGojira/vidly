@@ -1,22 +1,21 @@
-import config from "./config.json";
+import {moviesApiEnd} from "../config.json";
 import http from "./httpService";
 
-export const gotMovies = async () => {
-  const { data: movies } = await http.get(config.moviesApiEnd);
-  return movies;
+export const getMovies = () => {
+  return http.get(moviesApiEnd);
 };
 
 export const gotMovie = async (id) => {
-  const { data: movie } = await http.get(`${config.moviesApiEnd}/${id}`);
+  const { data: movie } = await http.get(`${moviesApiEnd}/${id}`);
   return movie;
 };
 
 export async function saveMovie(movie) {
   const payload = changeMovie(movie);
   if(movie._id === undefined){
-    await http.post(config.moviesApiEnd,payload);
+    await http.post(moviesApiEnd,payload);
   }else{
-    await http.put(`${config.moviesApiEnd}/${movie._id}`,payload);
+    await http.put(`${moviesApiEnd}/${movie._id}`,payload);
   }
 }
 
@@ -30,6 +29,6 @@ function changeMovie(movie){
   return newMovie;
 }
 
-export const deleteMovie = async (id) => {
-  await http.delete(`${config.moviesApiEnd}/${id}`);
+export const deleteMovie = (id) => {
+  return http.delete(`${moviesApiEnd}/${id}`);
 }

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import Form from "./common/form";
 import Joi from "joi-browser";
-import { getGenres } from "../services/fakeGenreService";
+// import { getGenres } from "../services/fakeGenreService";
 import { getMovie } from "../services/fakeMovieService";
 
-import { gotGenres } from "../services/genreService";
+import { getGenres } from "../services/genreService";
 import { gotMovie,saveMovie } from "../services/movieService";
 
 class MovieDetails extends Form {
@@ -37,7 +37,8 @@ class MovieDetails extends Form {
 
   async componentDidMount() {
     // const genres = [...getGenres()];
-    const genres = [...await gotGenres()];
+    const {data} = await getGenres();
+    const genres = [...data];
     this.setState({ genres });
     //点击new按钮的跳转
     const movieId = this.props.match.params.id;

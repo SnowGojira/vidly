@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { getMovies } from "../services/fakeMovieService";
-import { getGenres } from "../services/fakeGenreService";
+// import { getMovies } from "../services/fakeMovieService";
+// import { getGenres } from "../services/fakeGenreService";
 import MoviesTable from "./moviesTable";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
@@ -9,8 +9,9 @@ import { Link } from "react-router-dom";
 import ListGroup from "./common/listGroup";
 import _ from "lodash";
 
-import { gotGenres } from "../services/genreService";
-import { gotMovies,deleteMovie } from "../services/movieService";
+import { getGenres } from "../services/genreService";
+import { getMovies,deleteMovie } from "../services/movieService";
+import { toast } from "react-toastify";
 
 // import config from "../services/config.json";
 // import http from "../services/httpService";
@@ -27,10 +28,12 @@ class Movies extends Component {
   };
 
   async componentDidMount() {
-    const genres = [{ name: "All genres", _id: -1 }, ...(await gotGenres())];
+    const {data} = await getGenres();
+    const genres = [{ name: "All genres", _id: -1 }, ...data];
 
+    const {data:movies} = await getMovies();
     this.setState({
-      movies: await gotMovies(),
+      movies: movies,
       genres,
     });
   }
@@ -46,16 +49,14 @@ class Movies extends Component {
   };
   handleDelete = async (movie) => {
     const originalMovies = this.state.movies;
-    const deletedMovies = this.state.movies.filter((m) => m._id !== movie._id);
+    const deletedMovies = originalMovies.filter((m) => m._id !== movie._id);
     this.setState({ movies:deletedMovies });
 
     try{
       await deleteMovie(movie._id);
     }catch(err){
       if(err.response && err.response.status === 404){
-        console.log("You have already deleted it!")
-      }else{
-        console.log("something happened! "+err);
+        toast.error("You have already deleted it!")
       }
       this.setState({movies:originalMovies});
     }

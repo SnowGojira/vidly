@@ -1,10 +1,14 @@
 import axios from "axios";
+import {toast} from "react-toastify";
+import logger from "./logService";
 
 axios.interceptors.response.use(null,err=>{
   const clientError = err.response && err.response.status >=400 && err.response.status <500;
   if(!clientError){
-    console.log("An unexcepted error happened!:"+err);
+    toast.error("An unexcepted error happened!");
   }
+  
+  logger.log(err);
   return Promise.reject(err);
 })
 
