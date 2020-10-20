@@ -5,7 +5,7 @@ import { getGenres } from "../services/fakeGenreService";
 import { getMovie } from "../services/fakeMovieService";
 
 import { gotGenres } from "../services/genreService";
-import { gotMovies,saveMovie } from "../services/movieService";
+import { gotMovie,saveMovie } from "../services/movieService";
 
 class MovieDetails extends Form {
   state = {
@@ -44,7 +44,8 @@ class MovieDetails extends Form {
     if (movieId === "new") return;
     
     //直接点击元素跳转的链接
-    const movie = getMovie(movieId);
+    // const movie = getMovie(movieId);
+    const movie = await gotMovie(movieId);
     if (!movie) return this.props.history.replace("/not-found");
     this.setState({ data: this.mapToViewModel(movie) });
   }
