@@ -1,4 +1,4 @@
-import React from "react";
+import React ,{Component} from "react";
 import "./App.css";
 import Movies from "./components/movies";
 import { Route, Switch, Redirect } from "react-router-dom";
@@ -12,11 +12,27 @@ import RegisterForm from "./components/registerForm";
 import {ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function App() {
+import jwtDecoder from "jwt-decode";
+
+class App extends Component {
+  state={user:null}
+
+  componentDidMount(){
+    try {
+      //如果为空，jwtDecoder会出bug
+      const token = localStorage.getItem("token");
+      const user = jwtDecoder(token);
+      this.setState({user});
+    } catch (error) {
+      //do nothing
+    }
+    
+  }
+  render(){
   return (
     <React.Fragment>
       <ToastContainer />
-      <NavBar />
+      <NavBar user={this.state.user}/>
       <main className="container">
         <Switch>
           <Route path="/login" component={LoginForm} />
@@ -32,6 +48,7 @@ function App() {
       </main>
     </React.Fragment>
   );
+}
 }
 
 export default App;

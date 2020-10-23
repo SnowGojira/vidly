@@ -19,7 +19,7 @@ class RegisterForm extends Form {
     try{
       const {headers} = await register(this.state.data);
       localStorage.setItem("token",headers["x-auth-token"]);
-      this.props.history.push("/");
+      window.location="/";
       
     }catch(err){
       if(err.response && err.response.status === 400){
