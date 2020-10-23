@@ -9,23 +9,14 @@ export const getMovie = async (id) => {
   return http.get(`${moviesApiEnd}/${id}`);
 };
 
-export async function saveMovie(movie) {
-  const payload = changeMovie(movie);
+export function saveMovie(movie) {
+  const payload = {...movie};
   if(movie._id === undefined){
-    await http.post(moviesApiEnd,payload);
+    return http.post(moviesApiEnd,payload);
   }else{
-    await http.put(`${moviesApiEnd}/${movie._id}`,payload);
+    delete payload._id;
+    return http.put(`${moviesApiEnd}/${movie._id}`,payload);
   }
-}
-
-function changeMovie(movie){
-  const newMovie = {};
-  
-  newMovie.title = movie.title;
-  newMovie.genreId = movie.genreId;
-  newMovie.numberInStock = movie.numberInStock;
-  newMovie.dailyRentalRate = movie.dailyRentalRate;
-  return newMovie;
 }
 
 export const deleteMovie = (id) => {

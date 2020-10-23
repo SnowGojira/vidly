@@ -69,17 +69,8 @@ class MovieDetails extends Form {
   }
 
   doSubmit = async () => {
-    //在这一步完成post
-    try{
-      //saveMovie(this.state.data);
       await saveMovie(this.state.data);
       this.props.history.push("/movies");
-      
-    }catch(err){
-      console.log("something happened:"+err);
-    }
-    
-    
   };
 
   render() {
