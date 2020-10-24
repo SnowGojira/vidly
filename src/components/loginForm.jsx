@@ -1,7 +1,7 @@
 import React from "react";
 import Joi from "joi-browser";
 import Form from "./common/form";
-import {login} from "../services/authService";
+import auth from "../services/authService";
 
 class LoginForm extends Form {
   state = {
@@ -18,8 +18,7 @@ class LoginForm extends Form {
     const{username,password} = this.state.data;
 
     try{
-      const {data:token} = await login(username,password);
-      localStorage.setItem('token',token);
+      await auth.login(username,password);
       window.location="/";
     }catch(err){
       if(err.response && err.response.status === 400){

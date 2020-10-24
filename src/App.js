@@ -1,6 +1,7 @@
 import React ,{Component} from "react";
 import "./App.css";
 import Movies from "./components/movies";
+import Logout from "./components/logout";
 import { Route, Switch, Redirect } from "react-router-dom";
 import NavBar from "./components/navBar";
 import Customers from "./components/customers";
@@ -11,23 +12,17 @@ import LoginForm from "./components/loginForm";
 import RegisterForm from "./components/registerForm";
 import {ToastContainer} from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import auth from "./services/authService";
 
-import jwtDecoder from "jwt-decode";
 
 class App extends Component {
   state={user:null}
 
   componentDidMount(){
-    try {
-      //如果为空，jwtDecoder会出bug
-      const token = localStorage.getItem("token");
-      const user = jwtDecoder(token);
-      this.setState({user});
-    } catch (error) {
-      //do nothing
-    }
-    
+    const user = auth.getCurrentUser();
+    this.setState({user});
   }
+  
   render(){
   return (
     <React.Fragment>
@@ -36,6 +31,7 @@ class App extends Component {
       <main className="container">
         <Switch>
           <Route path="/login" component={LoginForm} />
+          <Route path="/logout" component={Logout} />
           <Route path="/register" component={RegisterForm} />
           <Route path="/movies/:id" component={MovieDetails} />
           <Route path="/movies" component={Movies} />
