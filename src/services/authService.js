@@ -3,6 +3,7 @@ import http from "./httpService";
 import jwtDecoder from "jwt-decode";
 
 const tokenKey = "token";
+http.setToken(getToken());
 
 export const login = async function (email,password){
     const {data:token} = await http.post(authApiEnd,{
@@ -35,6 +36,7 @@ export function logout(){
 export function getToken(){
     return localStorage.getItem(tokenKey);
 }
+
 export default {
     login,
     loginWithToken,
